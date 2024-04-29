@@ -56,7 +56,7 @@ function SubmitButton() {
     )
 }
 
-const initialUser: sessionTypes.LoginUserDto = {
+const initialUser = {
     email: '',
     password: ''
 }
