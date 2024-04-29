@@ -7,7 +7,7 @@ const AuthPage: React.FC = () => {
     return (
         <div className={"flex h-screen justify-center items-center"}>
             <Formik
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={() => console.log("Отправка формы")}
                 initialValues={initialUser}
             >
                 <Form className={"w-1/4"}>
