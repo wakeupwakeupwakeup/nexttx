@@ -76,17 +76,9 @@ const HomePage: React.FC = () => {
                                     <Card className={"border-none"}>
                                         <CardHeader>
                                             <CardTitle>Регистрация</CardTitle>
-                                            <CardDescription>Автоматическая регистрация аккаунтов</CardDescription>
+                                            <CardDescription></CardDescription>
                                         </CardHeader>
                                         <CardContent className={"flex flex-col gap-3"}>
-                                            <div className={"flex flex-col gap-2"}>
-                                                <Label htmlFor={"chanelName"}>Название канала</Label>
-                                                <Input id={"chanelName"} type={"text"}/>
-                                            </div>
-                                            <div className={"flex flex-col gap-2"}>
-                                                <Label htmlFor={"viewersNumber"}>Количество зрителей</Label>
-                                                <Input id={"viewersNumber"} type={"number"}/>
-                                            </div>
                                             <div className={"flex flex-col gap-2"}>
                                                 <Label htmlFor={"time"}>Время</Label>
                                                 <Input id={"time"} type={"time"} step={1}/>
@@ -101,18 +93,10 @@ const HomePage: React.FC = () => {
                                 <TabsContent value={"email"}>
                                     <Card className={"border-none"}>
                                         <CardHeader>
-                                            <CardTitle>Зрители</CardTitle>
-                                            <CardDescription>Накрутка зрителей на трансляцию</CardDescription>
+                                            <CardTitle>Почта</CardTitle>
+                                            <CardDescription></CardDescription>
                                         </CardHeader>
                                         <CardContent className={"flex flex-col gap-3"}>
-                                            <div className={"flex flex-col gap-2"}>
-                                                <Label htmlFor={"chanelName"}>Название канала</Label>
-                                                <Input id={"chanelName"} type={"text"}/>
-                                            </div>
-                                            <div className={"flex flex-col gap-2"}>
-                                                <Label htmlFor={"viewersNumber"}>Количество зрителей</Label>
-                                                <Input id={"viewersNumber"} type={"number"}/>
-                                            </div>
                                             <div className={"flex flex-col gap-2"}>
                                                 <Label htmlFor={"time"}>Время</Label>
                                                 <Input id={"time"} type={"time"} step={1}/>
