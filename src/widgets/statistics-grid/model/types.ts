@@ -1,7 +1,7 @@
 type StatisticsData = {
-    label: string,
-    count: number,
-    type: string,
+    tasks_active: number,
+    tasks_all: number,
+    users_all: number
 }
 
 interface IconMap {
