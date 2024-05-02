@@ -7,7 +7,6 @@ import {useForm} from "react-hook-form";
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import axios from "axios";
-import * as process from "process";
 import {Input} from "@/shared/ui/@/components/ui/input";
 import {ViewersTaskSchema} from "@features/task-add/model/task.contracts";
 import {Button} from "@/shared/ui/@/components/ui/button";
@@ -20,28 +19,26 @@ const AddTaskForm: React.FC = () => {
         resolver: zodResolver(ViewersTaskSchema),
         defaultValues: {
             channel: '',
-            count: 0,
+            count: 1,
         }
     })
 
     function onSubmit(values: z.infer<typeof ViewersTaskSchema>) {
         const refresh_token = localStorage.getItem('refresh_token')
         const access_token = localStorage.getItem('access_token')
-        const timeString = values.complete_timestamp;
-        const [hours, minutes] = timeString.split(":");
-        const date = new Date();
-        date.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
-        values.complete_timestamp = Math.floor(date.getTime() / 1000)
+        const [hours, minutes] = values.complete_timestamp.split(":")
+        const currentDate = new Date()
+        currentDate.setHours(currentDate.getHours() + parseInt(hours, 10))
+        currentDate.setMinutes(currentDate.getMinutes() + parseInt(minutes, 10))
+        values.complete_timestamp = Math.floor(currentDate.getTime() / 1000)
         const combinedValues = {...values, properties: []}
-        console.log(values.complete_timestamp)
-        axios.post(`${process.env.NEXT_PUBLIC_API_HOST}tasks/stream/create`, combinedValues, {
+        axios.post(`http://185.104.113.48:8000/tasks/stream/create`, combinedValues, {
             headers: {
                 Authorization: `Bearer ${refresh_token}`,
                 contentType: "application/json"
             }
         })
             .then((res) => {
-
                 if (res.status == 200) {
                     return
                 } else {
