@@ -5,15 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import Sidebar from "@widgets/sidebar/sidebar";
 import {Badge} from "@/shared/ui/@/components/ui/badge";
-import Cookies from "js-cookie";
-import {redirect} from "next/navigation";
 
 const MainLayout = ({ children }: { children: React.ReactNode}) => {
     const [isNavOpen, setIsNavOpen] = React.useState(true);
-    const access_token = Cookies.get('access_token')
-    if (!access_token) {
-        return redirect('/auth')
-    }
+
     return (
         <>
             <header className={"flex items-center justify-between px-8 py-3 gap-8 bg-twitch-gray-400"}>

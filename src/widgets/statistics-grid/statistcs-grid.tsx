@@ -2,7 +2,6 @@
 
 import axios from "axios";
 import React from "react";
-import Cookies from "js-cookie";
 import {redirect} from "next/navigation";
 
 const labelMap: Record<string, string> = {
@@ -16,20 +15,41 @@ const labelMap: Record<string, string> = {
 //     task: <BookCheck size={32} />
 // }
 const StatisticsGrid: React.FC = () => {
-    const [stats, setStats] = React.useState({})
+    const [stats, setStats] = React.useState<StatisticsData>({
+        tasks_active: 0,
+        tasks_all: 0,
+        users_all: 0,
+    })
     React.useEffect(() => {
-        axios.get('http://185.104.113.48:8000/statistic', {
-            headers: { Authorization: `Bearer ${Cookies.get('access_token')}` }
+        const refresh_token = localStorage.getItem('refresh_token')
+        const access_token = localStorage.getItem('access_token')
+        axios.get(`http://185.104.113.48:8000/statistic`, {
+            headers: { Authorization: `Bearer ${refresh_token}` }
         })
             .then((res) => {
                 if (res.status == 200) {
-                    console.log(res)
                     setStats(res.data)
                 } else {
-                    redirect('/auth')
+                    axios.post(`http://185.104.113.48:8000/token/refresh`, refresh_token)
+                        .then((res) => {
+                            if (res.status === 200) {
+                                localStorage.setItem('access_token', res.data.access_token)
+                                axios.get(`http://185.104.113.48:8000/statistic`, {
+                                    headers: { Authorization: `Bearer ${access_token}` }
+                                })
+                                    .then((res) => {
+                                        if (res.status == 200) {
+                                            setStats(res.data)
+                                        } else {
+                                            redirect('/auth')
+                                        }
+                                    })
+                            }
+                        })
                 }
             })
     }, []);
+
     return (
         <div className={"w-full"}>
             <h1>
@@ -42,7 +62,7 @@ const StatisticsGrid: React.FC = () => {
                             <h3 className={"mb-12"}>{labelMap[label] as keyof StatisticsData}</h3>
                             <div className={"flex items-center gap-2 justify-between"}>
                                 {/*{icons[item.type]}*/}
-                                <span className={"text-4xl font-bold"}>{typeof value === 'string' ? value : ''}</span>
+                                <span className={"text-4xl font-bold"}>{value}</span>
                             </div>
                         </div>
                     ))

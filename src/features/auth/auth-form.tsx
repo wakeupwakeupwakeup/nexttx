@@ -9,7 +9,6 @@ import React from "react";
 import {Input} from "@/shared/ui/@/components/ui/input";
 import {Button} from "@/shared/ui/@/components/ui/button";
 import axios from "axios";
-import Cookies from 'js-cookie'
 import {useRouter} from "next/navigation";
 
 export const AuthForm: React.FC = () => {
@@ -33,8 +32,8 @@ export const AuthForm: React.FC = () => {
             .then((res) => {
                 if (res.status === 200) {
                     const data = res.data
-                    Cookies.set('access_token', data.access_token)
-                    Cookies.set('refresh_token', data.refresh_token)
+                    localStorage.setItem('access_token', res.data.access_token)
+                    localStorage.setItem('refresh_token', data.refresh_token)
 
                     router.push('/tasks')
                 }

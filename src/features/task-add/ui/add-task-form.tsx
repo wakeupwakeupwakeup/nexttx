@@ -11,8 +11,8 @@ import * as process from "process";
 import {Input} from "@/shared/ui/@/components/ui/input";
 import {ViewersTaskSchema} from "@features/task-add/model/task.contracts";
 import {Button} from "@/shared/ui/@/components/ui/button";
-import Cookies from "js-cookie";
 import {redirect} from "next/navigation";
+import {SheetClose} from "@/shared/ui/@/components/ui/sheet";
 
 
 const AddTaskForm: React.FC = () => {
@@ -25,19 +25,41 @@ const AddTaskForm: React.FC = () => {
     })
 
     function onSubmit(values: z.infer<typeof ViewersTaskSchema>) {
-        console.log('sent')
+        const refresh_token = localStorage.getItem('refresh_token')
+        const access_token = localStorage.getItem('access_token')
+        const currentDate = new Date()
+        const day = String(currentDate.getDate()).padStart(2, '0')
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0')
+        const year = currentDate.getFullYear();
+        values.complete_datetime = `${year}-${month}-${day} ${values.complete_datetime}`
         const combinedValues = {...values, properties: []};
         axios.post(`${process.env.NEXT_PUBLIC_API_HOST}tasks/stream/create`, combinedValues, {
             headers: {
-                Authorization: `Bearer ${Cookies.get("refresh_token")}`,
+                Authorization: `Bearer ${refresh_token}`,
                 contentType: "application/json"
             }
         })
             .then((res) => {
+
                 if (res.status == 200) {
-                    console.log(res)
+                    return
                 } else {
-                    redirect(('/auth'))
+                    axios.post(`http://185.104.113.48:8000/token/refresh`, refresh_token)
+                        .then((res) => {
+                            if (res.status === 200) {
+                                localStorage.setItem('access_token', res.data.access_token)
+                                axios.get(`http://185.104.113.48:8000/statistic`, {
+                                    headers: { Authorization: `Bearer ${access_token}` }
+                                })
+                                    .then((res) => {
+                                        if (res.status == 200) {
+                                            return
+                                        } else {
+                                            redirect('/auth')
+                                        }
+                                    })
+                            }
+                        })
                 }
 
             })
@@ -51,7 +73,7 @@ const AddTaskForm: React.FC = () => {
             </CardHeader>
             <CardContent>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className={"flex flex-col"}>
                         <FormField
                             control={form.control}
                             name={"channel"}
@@ -77,8 +99,17 @@ const AddTaskForm: React.FC = () => {
                                     <FormControl>
                                         <Input
                                             {...field}
-                                            onChange={(e) => field.onChange(e.target.valueAsNumber)}
                                             type="number"
+                                            onChange={(e) => {
+                                                const value = e.target.value;
+                                                if (value.length > 1 && value.startsWith('0')) {
+                                                    e.target.value = ''
+                                                    field.onChange('')
+                                                } else {
+                                                    field.onChange(e.target.valueAsNumber)
+                                                }
+                                            }}
+                                            min={1}
                                         />
                                     </FormControl>
                                     <FormMessage/>
@@ -90,11 +121,13 @@ const AddTaskForm: React.FC = () => {
                             name={"complete_datetime"}
                             render={({field}) => (
                                 <FormItem>
-                                    <FormLabel>Дата</FormLabel>
+                                    <FormLabel>Время</FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}
-                                            type="date"
+                                            type="time"
+                                            min={1}
+                                            step={1}
                                             value={field.value}
                                             onChange={(e) => field.onChange(e.target.value)}
                                         />
@@ -103,9 +136,11 @@ const AddTaskForm: React.FC = () => {
                                 </FormItem>
                             )}
                         />
-                        <Button onClick={() => {
+                        <SheetClose>
+                            <Button onClick={() => {
                             console.log('clicked');
                         }} type={"submit"}>Создать</Button>
+                        </SheetClose>
                     </form>
                 </Form>
             </CardContent>
