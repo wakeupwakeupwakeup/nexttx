@@ -27,12 +27,13 @@ const AddTaskForm: React.FC = () => {
     function onSubmit(values: z.infer<typeof ViewersTaskSchema>) {
         const refresh_token = localStorage.getItem('refresh_token')
         const access_token = localStorage.getItem('access_token')
-        const currentDate = new Date()
-        const day = String(currentDate.getDate()).padStart(2, '0')
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0')
-        const year = currentDate.getFullYear();
-        values.complete_datetime = `${year}-${month}-${day} ${values.complete_datetime}`
-        const combinedValues = {...values, properties: []};
+        const timeString = values.complete_timestamp
+        const [hours, minutes] = timeString.split(":")
+        const date = new Date()
+        date.setUTCHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0)
+        values.complete_timestamp = Math.floor(date.getTime() / 1000)
+        const combinedValues = {...values, properties: []}
+        console.log(values.complete_timestamp)
         axios.post(`${process.env.NEXT_PUBLIC_API_HOST}tasks/stream/create`, combinedValues, {
             headers: {
                 Authorization: `Bearer ${refresh_token}`,
@@ -118,22 +119,22 @@ const AddTaskForm: React.FC = () => {
                         />
                         <FormField
                             control={form.control}
-                            name={"complete_datetime"}
-                            render={({field}) => (
-                                <FormItem>
-                                    <FormLabel>Время</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            type="time"
-                                            min={1}
-                                            step={1}
-                                            onChange={(e) => field.onChange(e.target.value)}
-                                        />
-                                    </FormControl>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
+                            name={"complete_timestamp"}
+                            render={({field}) => {
+                                return (
+                                    <FormItem>
+                                        <FormLabel>Время</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                                type="time"
+                                                min={1}
+                                            />
+                                        </FormControl>
+                                        <FormMessage/>
+                                    </FormItem>
+                                )
+                            }}
                         />
                         <SheetClose asChild={true}>
                             <Button onClick={() => {

@@ -49,7 +49,9 @@ const TasksHistory: React.FC = () => {
                     setTasks(res.data)
                     setIsDataLoading(false)
                 } else {
-                    axios.post(`http://185.104.113.48:8000/token/refresh`, {refresh_token: refresh_token})
+                    axios.post(`http://185.104.113.48:8000/token/refresh`, {
+                        refresh_token: refresh_token
+                    })
                         .then((res) => {
                             if (res.status === 200) {
                                 localStorage.setItem('access_token', res.data.access_token)
@@ -57,7 +59,7 @@ const TasksHistory: React.FC = () => {
                                     headers: { Authorization: `Bearer ${access_token}` }
                                 })
                                     .then((res) => {
-                                        if (res.status == 200) {
+                                        if (res.status === 200) {
                                             setTasks(res.data)
                                             setIsDataLoading(false)
                                         } else {
