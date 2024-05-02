@@ -139,7 +139,7 @@ const AddTaskForm: React.FC = () => {
                         <SheetClose>
                             <Button onClick={() => {
                             console.log('clicked');
-                        }} type={"submit"}>Создать</Button>
+                        }} type={"submit"} asChild={true}>Создать</Button>
                         </SheetClose>
                     </form>
                 </Form>
