@@ -27,6 +27,7 @@ const TasksHistory: React.FC = () => {
         count: 0,
         tasks: []
     })
+
     React.useEffect(() => {
         const refresh_token = localStorage.getItem('refresh_token')
         const access_token = localStorage.getItem('access_token')
