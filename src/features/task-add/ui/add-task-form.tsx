@@ -128,7 +128,6 @@ const AddTaskForm: React.FC = () => {
                                             type="time"
                                             min={1}
                                             step={1}
-                                            value={field.value}
                                             onChange={(e) => field.onChange(e.target.value)}
                                         />
                                     </FormControl>
@@ -136,10 +135,10 @@ const AddTaskForm: React.FC = () => {
                                 </FormItem>
                             )}
                         />
-                        <SheetClose>
+                        <SheetClose asChild={true}>
                             <Button onClick={() => {
                             console.log('clicked');
-                        }} type={"submit"} asChild={true}>Создать</Button>
+                        }} type={"submit"}>Создать</Button>
                         </SheetClose>
                     </form>
                 </Form>
