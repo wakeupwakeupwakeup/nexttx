@@ -1,5 +1,4 @@
 import TasksSheet from "@widgets/tasks-control/ui/tasks-tabs";
-import {Button} from "@/shared/ui/@/components/ui/button";
 import {ScrollArea} from "@/shared/ui/@/components/ui/scroll-area";
 import {
     Table,
@@ -95,7 +94,6 @@ const TasksControl: React.FC = () => {
                 <h1>Задания</h1>
                 <div className={"flex gap-3"}>
                     <TasksSheet/>
-                    <Button variant={"destructive"} disabled={true}>Удалить</Button>
                 </div>
             </div>
             <ScrollArea className={"px-4"}>
