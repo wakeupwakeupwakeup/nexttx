@@ -27,10 +27,10 @@ const AddTaskForm: React.FC = () => {
     function onSubmit(values: z.infer<typeof ViewersTaskSchema>) {
         const refresh_token = localStorage.getItem('refresh_token')
         const access_token = localStorage.getItem('access_token')
-        const timeString = values.complete_timestamp
-        const [hours, minutes] = timeString.split(":")
-        const date = new Date()
-        date.setUTCHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0)
+        const timeString = values.complete_timestamp;
+        const [hours, minutes] = timeString.split(":");
+        const date = new Date();
+        date.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
         values.complete_timestamp = Math.floor(date.getTime() / 1000)
         const combinedValues = {...values, properties: []}
         console.log(values.complete_timestamp)

@@ -1,3 +1,5 @@
+'use client'
+
 import TasksSheet from "@widgets/tasks-control/ui/tasks-tabs";
 import {ScrollArea} from "@/shared/ui/@/components/ui/scroll-area";
 import {
@@ -106,7 +108,7 @@ const TasksControl: React.FC = () => {
                             <TableHead>Тип</TableHead>
                             <TableHead>Статус</TableHead>
                             <TableHead>Канал</TableHead>
-                            <TableHead>Дата создания</TableHead>
+                            <TableHead>Дата завершения</TableHead>
                             <TableHead></TableHead>
                         </TableRow>
                     </TableHeader>
