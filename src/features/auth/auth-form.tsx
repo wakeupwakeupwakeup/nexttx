@@ -31,7 +31,6 @@ export const AuthForm: React.FC = () => {
         })
             .then((res) => {
                 if (res.status === 200) {
-                    console.log(res.data)
                     const data = res.data
                     localStorage.setItem('access_token', res.data.access_token)
                     localStorage.setItem('refresh_token', data.refresh_token)
