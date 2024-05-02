@@ -82,7 +82,7 @@ const TasksHistory: React.FC = () => {
                                         <TableRow key={index} className={"cursor-pointer"}>
                                             {
                                                 Object.entries(taskItem)
-                                                    .filter(([key, value]) => ['id', 'type', 'complete_task'].includes(key))
+                                                    .filter(([key, _value]) => ['id', 'type', 'complete_task'].includes(key))
                                                     .map(([label, info], index) => (
                                                         <TableCell key={index}>{info}</TableCell>
                                                     ))
@@ -96,7 +96,7 @@ const TasksHistory: React.FC = () => {
                                         <div className={"flex flex-col"}>
                                             {
                                                 Object.entries(taskItem).map(([label, info], index) => (
-                                                    <span><strong>{`${labelsMap[label]}`}:</strong> {`${info}`}</span>
+                                                    <span key={index}><strong>{`${labelsMap[label]}`}:</strong> {`${info}`}</span>
                                                 ))
                                             }
                                         </div>
