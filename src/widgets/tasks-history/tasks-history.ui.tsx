@@ -77,7 +77,7 @@ const TasksHistory: React.FC = () => {
                     <TableBody className={"overflow-scroll"}>
                         {
                             tasks.tasks.map((taskItem, index) => (
-                                <Dialog>
+                                <Dialog key={index}>
                                     <DialogTrigger asChild={true}>
                                         <TableRow key={index} className={"cursor-pointer"}>
                                             {
