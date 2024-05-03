@@ -33,6 +33,7 @@ const TasksControl: React.FC = () => {
 
     const handleDelete = async (id, type) => {
         const access_token = localStorage.getItem('access_token')
+        const refresh_token = localStorage.getItem('refresh_token')
         axios.delete('http://185.104.113.48:8000/tasks/delete', {
             params: {
                 id: id,
@@ -43,7 +44,29 @@ const TasksControl: React.FC = () => {
             }
         })
             .then((res) => {
-                console.log(res)
+                window.location.reload()
+            })
+            .catch((err) => {
+                axios.post(`http://185.104.113.48:8000/token/refresh`, {refresh_token: refresh_token})
+                    .then((res) => {
+                        if (res.status === 200) {
+                            localStorage.setItem('access_token', res.data.access_token)
+                            axios.delete('http://185.104.113.48:8000/tasks/delete', {
+                                params: {
+                                    id: id,
+                                    type: type
+                                },
+                                headers: {
+                                    Authorization: `Bearer ${access_token}`
+                                }
+                            })
+                                .then(() => {
+                                    window.location.reload()
+                                })
+                        } else {
+                            redirect('/auth')
+                        }
+                    })
             })
     }
 

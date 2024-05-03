@@ -28,7 +28,8 @@ const AddTaskForm: React.FC = () => {
         const access_token = localStorage.getItem('access_token')
         const [hours, minutes] = values.complete_timestamp.split(':').map(num => parseInt(num, 10));
         const userDate = new Date();
-        userDate.setUTCHours(hours, minutes, 0, 0)
+        const currentOffset = new Date().getTimezoneOffset() / 60
+        userDate.setUTCHours(hours + currentOffset, minutes, 0, 0)
         values.complete_timestamp = Math.floor(userDate.getTime() / 1000)
         const combinedValues = {...values, properties: []}
         axios.post(`http://185.104.113.48:8000/tasks/stream/create`, combinedValues, {
