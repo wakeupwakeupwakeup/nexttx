@@ -26,11 +26,10 @@ const AddTaskForm: React.FC = () => {
     function onSubmit(values: z.infer<typeof ViewersTaskSchema>) {
         const refresh_token = localStorage.getItem('refresh_token')
         const access_token = localStorage.getItem('access_token')
-        const [hours, minutes] = values.complete_timestamp.split(":")
-        const currentDate = new Date()
-        currentDate.setHours(currentDate.getHours() + parseInt(hours, 10))
-        currentDate.setMinutes(currentDate.getMinutes() + parseInt(minutes, 10))
-        values.complete_timestamp = Math.floor(currentDate.getTime() / 1000)
+        const [hours, minutes] = values.complete_timestamp.split(':').map(num => parseInt(num, 10));
+        const userDate = new Date();
+        userDate.setUTCHours(hours, minutes, 0, 0)
+        values.complete_timestamp = Math.floor(userDate.getTime() / 1000)
         const combinedValues = {...values, properties: []}
         axios.post(`http://185.104.113.48:8000/tasks/stream/create`, combinedValues, {
             headers: {
@@ -40,6 +39,7 @@ const AddTaskForm: React.FC = () => {
         })
             .then((res) => {
                 if (res.status == 200) {
+                    window.location.reload()
                     return
                 } else {
                     axios.post(`http://185.104.113.48:8000/token/refresh`, refresh_token)
@@ -51,6 +51,7 @@ const AddTaskForm: React.FC = () => {
                                 })
                                     .then((res) => {
                                         if (res.status == 200) {
+                                            window.location.reload()
                                             return
                                         } else {
                                             redirect('/auth')
