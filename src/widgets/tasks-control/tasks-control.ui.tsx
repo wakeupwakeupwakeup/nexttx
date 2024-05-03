@@ -44,7 +44,12 @@ const TasksControl: React.FC = () => {
             }
         })
             .then((res) => {
-                window.location.reload()
+                setActiveTasks(prevState => {
+                    const updatedTasks = prevState.tasks.filter(task => task.id !== id)
+                    return {
+                        tasks: updatedTasks
+                    }
+                })
             })
             .catch((err) => {
                 axios.post(`http://185.104.113.48:8000/token/refresh`, {refresh_token: refresh_token})
@@ -61,7 +66,12 @@ const TasksControl: React.FC = () => {
                                 }
                             })
                                 .then(() => {
-                                    window.location.reload()
+                                    setActiveTasks(prevState => {
+                                        const updatedTasks = prevState.tasks.filter(task => task.id !== id)
+                                        return {
+                                            tasks: updatedTasks
+                                        }
+                                    })
                                 })
                         } else {
                             redirect('/auth')
