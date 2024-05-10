@@ -14,7 +14,7 @@ export const storeToken = async (request: AuthTokenData) => {
         name: "access_token",
         value: request.access_token,
         httpOnly: true,
-        sameSite: "lax",
+        sameSite: "none",
         secure: true
     })
 
@@ -22,7 +22,7 @@ export const storeToken = async (request: AuthTokenData) => {
         name: "refresh_token",
         value: request.refresh_token,
         httpOnly: true,
-        sameSite: "lax",
+        sameSite: "none",
         secure: true,
     })
     return Promise.resolve()
