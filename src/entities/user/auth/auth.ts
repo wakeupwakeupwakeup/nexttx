@@ -43,6 +43,7 @@ export const getRefreshToken = async () => {
         withCredentials: true,
         headers: {
             'Content-Type': 'application/json',
+            Cookie: cookiesString
         },
     })
         .then((res) => {
