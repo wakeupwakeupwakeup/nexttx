@@ -36,6 +36,7 @@ export const getRefreshToken = async () => {
     }, {})
 
     console.log(authCookies)
+    console.log(cookiesStore)
 
     const cookiesString = Object.keys(authCookies).map(key => `${key}=${authCookies[key]}`).join('; ')
     return await axios.get(`${process.env.NEXT_PUBLIC_LOCAL_HOST}/api/auth`, {
