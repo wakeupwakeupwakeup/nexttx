@@ -15,7 +15,7 @@ export const storeToken = async (request: AuthTokenData) => {
         value: request.access_token,
         httpOnly: true,
         sameSite: "none",
-        secure: false
+        secure: true
     })
 
     cookies().set({
@@ -23,7 +23,7 @@ export const storeToken = async (request: AuthTokenData) => {
         value: request.refresh_token,
         httpOnly: true,
         sameSite: "none",
-        secure: false,
+        secure: true,
     })
     return Promise.resolve()
 }
