@@ -4,7 +4,7 @@ import {Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger} from "@/shar
 import {Button} from "@/shared/ui/@/components/ui/button";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/shared/ui/@/components/ui/tabs";
 import React from "react";
-import AddTaskForm from "@features/task-add/ui/add-task-form";
+import AddTaskForm from "@features/task-add/add-task-form.ui";
 
 
 const TasksTabs: React.FC = () => {
