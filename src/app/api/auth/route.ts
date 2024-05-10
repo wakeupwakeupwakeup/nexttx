@@ -19,12 +19,10 @@ export async function GET(): Promise<NextResponse> {
                 }
             })
                 .then(async (res) => {
-                    console.log(res)
                     await storeToken(res.data)
                     return NextResponse.json({status: 200, data: cookies().get('access_token'), headers: {'Content-Type': 'application/json'}})
                 })
                 .catch((e) => {
-                    console.log(e)
                     return NextResponse.json({}, {status: 400})
                 })
         })

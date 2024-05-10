@@ -11,15 +11,11 @@ import {Button} from "@/shared/ui/@/components/ui/button";
 import {useRouter} from "next/navigation";
 import {AuthTokenData, storeToken} from "@entities/user/auth/auth";
 import axios from "axios";
-import {TError} from "@features/auth/auth-form.model";
 import {useToast} from "@/shared/ui/@/components/ui/use-toast";
 import {Toaster} from "@/shared/ui/@/components/ui/toaster";
 import {errorMap} from "@/shared/errors/errors-map";
 
 export const AuthForm: React.FC = () => {
-    const [error, setErrors] = React.useState<TError>({
-        message: ''
-    })
     const { toast } = useToast()
     const router = useRouter()
     const form = useForm<z.infer<typeof AuthSchema>>({
@@ -45,30 +41,17 @@ export const AuthForm: React.FC = () => {
                 }
             })
             .catch((err) => {
-                console.log(err)
                 toast({
                     variant: "destructive",
                     title: "Ошибка",
                     description: errorMap[err.response.data.detail],
                 })
-                setErrors({message: err.response.data.detail})
-
             })
     }
 
     return (
         <div className={"flex h-screen justify-center items-center"}>
             <Toaster />
-            {/*{*/}
-            {/*    error?.message && (*/}
-            {/*        <Alert variant={"destructive"} className={"fixed bottom-4 left-4 z-50 w-auto"}>*/}
-            {/*            <AlertCircle className={"w-4 h-4"}/>*/}
-            {/*            <AlertTitle>Error</AlertTitle>*/}
-            {/*            <AlertDescription>{error.message}</AlertDescription>*/}
-            {/*        </Alert>*/}
-            {/*    )*/}
-            {/*}*/}
-
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className={"flex flex-col w-1/4"}>
                     <h1 className={"text-3xl font-medium text-center"}>Авторизация</h1>

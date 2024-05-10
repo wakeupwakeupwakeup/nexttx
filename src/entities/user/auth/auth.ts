@@ -46,11 +46,9 @@ export const getRefreshToken = async () => {
         }
     })
         .then((res) => {
-            console.log(res)
             return res.data.data.value
         })
         .catch((err) => {
-            console.log(err)
             return false
         })
 }
