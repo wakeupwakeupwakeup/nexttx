@@ -36,6 +36,7 @@ export const AuthForm: React.FC = () => {
         })
             .then(async (res) => {
                 if (res.status === 200) {
+                    console.log(res)
                     await storeToken(res.data)
                     router.push('/home')
                 }
