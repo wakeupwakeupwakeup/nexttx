@@ -6,6 +6,7 @@ const reqWithCredentials = axios.create({
 })
 
 reqWithCredentials.interceptors.request.use(async (config) => {
+    config.withCredentials = true
     if (config.url?.includes('login')) {
         return config
     }

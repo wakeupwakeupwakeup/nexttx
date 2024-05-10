@@ -43,7 +43,7 @@ export const getRefreshToken = async () => {
         withCredentials: true,
         headers: {
             'Content-Type': 'application/json',
-        }
+        },
     })
         .then((res) => {
             return res.data.data.value
