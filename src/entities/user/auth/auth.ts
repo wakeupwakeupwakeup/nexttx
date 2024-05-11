@@ -1,6 +1,5 @@
 'use server'
 
-import axios from "axios"
 import {cookies} from "next/headers";
 
 export type AuthTokenData = {
@@ -26,32 +25,4 @@ export const storeToken = async (request: AuthTokenData) => {
         secure: false,
     })
     return Promise.resolve()
-}
-
-export const getRefreshToken = async () => {
-    const cookiesStore = cookies()
-    const authCookies = cookiesStore.getAll().reduce((acc, cookie) => {
-        acc[cookie.name] = cookie.value
-        return acc
-    }, {})
-
-    console.log(authCookies)
-    console.log(cookiesStore)
-
-    const cookiesString = Object.keys(authCookies).map(key => `${key}=${authCookies[key]}`).join('; ')
-    return await axios.get(`${process.env.NEXT_PUBLIC_LOCAL_HOST}/api/auth`, {
-        withCredentials: true,
-        headers: {
-            'Content-Type': 'application/json',
-            Cookie: cookiesString
-        },
-    })
-        .then((res) => {
-            console.log(res)
-            return res.data.data.value
-        })
-        .catch((err) => {
-            console.log(err)
-            return false
-        })
 }
