@@ -11,7 +11,6 @@ async function getStatistics() {
             return res.data
         })
         .catch((e) => {
-            console.log(e)
             redirect('/auth')
         })
 }

@@ -43,9 +43,6 @@ const TableSkeleton: React.FC = () => {
 const TasksHistory: React.FC = async () => {
     const tasks = await getTaskHistory()
     const immutatedTasks: THistoryTask[] = tasks.tasks.map(({id, channel, complete_task}) => ({id, channel, complete_task}))
-    console.log('TASKS:', tasks)
-    console.log(immutatedTasks)
-
 
     return (
         <div className={"flex flex-col p-8 w-full bg-twitch-gray-300 rounded"}>

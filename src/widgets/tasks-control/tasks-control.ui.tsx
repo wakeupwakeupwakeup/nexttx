@@ -22,17 +22,12 @@ async function getActiveTasks(): Promise<TTasksArray> {
 
 const TasksControl: React.FC = async () => {
     const activeTasksData = await getActiveTasks()
-    console.log('TASKS FROM API', await getActiveTasks())
 
     return (
         <div className={"flex flex-col p-8 w-full bg-twitch-gray-300 rounded"}>
             <div className={"flex justify-between"}>
                 <h1>Задания</h1>
-                <div>
-                    <TasksTabs />
-
-                </div>
-
+                <TasksTabs />
             </div>
             {
                 activeTasksData.count > 0 ? (<TasksTable activeTasks={activeTasksData}/>) : (<div>Нет активных тасков</div>)

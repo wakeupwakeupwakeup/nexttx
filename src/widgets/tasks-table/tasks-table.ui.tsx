@@ -117,7 +117,6 @@ const columns: ColumnDef<TTask>[] = [
 
 
 const TasksTable: React.FC<{ activeTasks: TTasksArray}> = ({activeTasks}) => {
-    console.log(activeTasks)
     const [rowSelection, setRowSelection] = React.useState({})
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const table = useReactTable({
@@ -134,7 +133,6 @@ const TasksTable: React.FC<{ activeTasks: TTasksArray}> = ({activeTasks}) => {
         },
     })
     const tableRef = React.useRef(null)
-    console.log(table.getState())
     async function handleDeleteTask (taskId: number) {
         await deleteTask(taskId)
             .then(() => {
