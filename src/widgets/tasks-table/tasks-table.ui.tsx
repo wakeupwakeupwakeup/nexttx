@@ -132,20 +132,13 @@ const TasksTable: React.FC<{ activeTasks: TTasksArray}> = ({activeTasks}) => {
             columnFilters
         },
     })
-    const tableRef = React.useRef(null)
-    async function handleDeleteTask (taskId: number) {
-        await deleteTask(taskId)
-            .then(() => {
-
-            })
-    }
 
     return (
         <div className="w-full">
             <div className="rounded-md">
                 {
                     activeTasks && (
-                        <Table ref={tableRef}>
+                        <Table>
                             <TableHeader>
                                 {table.getHeaderGroups().map((headerGroup) => (
                                     <TableRow key={headerGroup.id}>

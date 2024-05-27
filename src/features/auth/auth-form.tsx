@@ -14,8 +14,10 @@ import axios from "axios";
 import {useToast} from "@/shared/ui/@/components/ui/use-toast";
 import {Toaster} from "@/shared/ui/@/components/ui/toaster";
 import {errorMap} from "@/shared/errors/errors-map";
+import {Loader2} from "lucide-react";
 
 export const AuthForm: React.FC = () => {
+    const [pending, setPending] = React.useState<boolean>(false)
     const { toast } = useToast()
     const router = useRouter()
     const form = useForm<z.infer<typeof AuthSchema>>({
@@ -27,6 +29,7 @@ export const AuthForm: React.FC = () => {
     })
 
     const onSubmit = async (formValues: z.infer<typeof AuthSchema>) => {
+        setPending(true)
         await axios.post<AuthTokenData>(`${process.env.NEXT_PUBLIC_API_HOST}/users/login`, {
             ...formValues
         },{
@@ -41,11 +44,21 @@ export const AuthForm: React.FC = () => {
                 }
             })
             .catch((err) => {
-                toast({
-                    variant: "destructive",
-                    title: "Ошибка",
-                    description: errorMap[err.response.data.detail],
-                })
+                console.log(err)
+                setPending(false)
+                if (err.response === undefined) {
+                    toast({
+                        variant: "destructive",
+                        title: "Ошибка",
+                        description: "Ошибка на стороне сервера",
+                    })
+                } else {
+                    toast({
+                        variant: "destructive",
+                        title: "Ошибка",
+                        description: errorMap[err.response.data.detail],
+                    })
+                }
             })
     }
 
@@ -65,6 +78,7 @@ export const AuthForm: React.FC = () => {
                                     <Input
                                         {...field}
                                         type="text"
+                                        autoComplete="username"
                                     />
                                 </FormControl>
                                 <FormMessage/>
@@ -81,13 +95,21 @@ export const AuthForm: React.FC = () => {
                                     <Input
                                         {...field}
                                         type="password"
+                                        autoComplete={"current-password"}
                                     />
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
                         )}
                     />
-                    <Button type={"submit"} className={"bg-twitch-purple-200 mt-6"}>Войти</Button>
+                    <Button disabled={pending} type={"submit"} className={"flex justify-center bg-twitch-purple-200 mt-6"}>
+                        Войти
+                        {
+                            pending ? (
+                                <Loader2 className={"h-4 w-4 ml-2 animate-spin"} />
+                            ) : null
+                        }
+                    </Button>
                 </form>
             </Form>
         </div>

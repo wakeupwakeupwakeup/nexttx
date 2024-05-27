@@ -2,12 +2,21 @@ import {NextRequest, NextResponse} from "next/server";
 import {cookies} from "next/headers";
 
 export async function GET(request: NextRequest) {
-    const token = cookies().get('access_token')
-    console.log(request)
-    console.log(token)
-    console.log(request.cookies.getAll())
-    return NextResponse.json({
-        access_token: cookies().get('access_token')?.value,
-        refresh_token: cookies().get('refresh_token')?.value,
-    }, {status: 200})
+    return await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/users/me`, {
+        headers: new Headers({
+            'Authorization': `Bearer ${cookies().get('access_token')?.value}`,
+        })
+    })
+        .then(res => {
+            // console.log(`CURRENT ACCESS TOKEN: ${cookies().get('access_token')?.value} \n CHECK TOKEN`, res)
+            // console.log(cookies().get('access_token')?.value)
+            if (res.ok) {
+                return NextResponse.json({}, {status: 200})
+            } else {
+                return NextResponse.json({}, {status: 400})
+            }
+        })
+        .catch(() => {
+            return NextResponse.json({}, {status: 500})
+        })
 }

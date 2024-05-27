@@ -1,18 +1,18 @@
 'use server'
 
 import React, {Suspense} from "react";
-import reqWithCredentials from "@/shared/lib/axios/interceptors";
-import {redirect} from "next/navigation";
 import {labelMap, StatisticsData} from "@widgets/statistics-grid/statistics-grid.model";
+import {cookies} from "next/headers";
 
 async function getStatistics() {
-    return reqWithCredentials.get(`${process.env.NEXT_PUBLIC_API_HOST}/statistic`)
-        .then((res) => {
-            return res.data
+    const response = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_HOST}/api/statistics`, {
+        credentials: 'same-origin',
+        headers: new Headers({
+            'Cookie': `access_token=${cookies().get('access_token')?.value}`,
         })
-        .catch((e) => {
-            redirect('/auth')
-        })
+    })
+    console.log(response)
+    return await response.clone().json()
 }
 
 const StatisticsGrid: React.FC = async () => {
@@ -24,7 +24,7 @@ const StatisticsGrid: React.FC = async () => {
                 Статистика сайта
             </h1>
             <Suspense fallback={<div>Loading...</div>}>
-                <div className={"grid grid-flow-col-dense p-6 rounded-xl gap-3 bg-twitch-gray-200"}>
+                <div className={"grid grid-flow-col-dense p-6 rounded-xl gap-3 bg-twitch-gray-200 transition duration-700"}>
                     {
                         stats && Object.entries(stats).map(([label, value], index: number) =>
                             <div

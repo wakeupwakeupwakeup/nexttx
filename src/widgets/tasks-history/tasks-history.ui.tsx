@@ -12,22 +12,19 @@ import {
 } from "@/shared/ui/@/components/ui/table";
 import React, {Suspense} from "react";
 import {Dialog, DialogContent, DialogHeader, DialogTrigger} from "@/shared/ui/@/components/ui/dialog";
-import reqWithCredentials from "@/shared/lib/axios/interceptors";
-import {redirect} from "next/navigation";
-import {labelsMap, THistoryTask, TTasksArray} from "@entities/task/types";
+import {labelsMap, THistoryTask} from "@entities/task/types";
 import {Skeleton} from "@/shared/ui/@/components/ui/skeleton";
+import {cookies} from "next/headers";
 
 
-async function getTaskHistory(): Promise<TTasksArray> {
-    return await reqWithCredentials.get(`${process.env.NEXT_PUBLIC_API_HOST}/tasks/history`)
-        .then((res) => {
-            if (res.status === 200) {
-                return res.data
-            }
+async function getTaskHistory() {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_HOST}/api/tasks/history`, {
+        credentials: 'same-origin',
+        headers: new Headers({
+            'Cookie': `access_token=${cookies().get('access_token')?.value}`,
         })
-        .catch(() => {
-            redirect('/auth')
-        })
+    })
+    return await response.clone().json()
 }
 
 const TableSkeleton: React.FC = () => {
@@ -45,7 +42,7 @@ const TasksHistory: React.FC = async () => {
     const immutatedTasks: THistoryTask[] = tasks.tasks.map(({id, channel, complete_task}) => ({id, channel, complete_task}))
 
     return (
-        <div className={"flex flex-col p-8 w-full bg-twitch-gray-300 rounded"}>
+        <div className={"flex flex-col p-8 w-full bg-twitch-gray-300 rounded h-[89vh]"}>
             <h1>История тасков</h1>
             <Suspense fallback={<TableSkeleton />}>
                 <ScrollArea className={"px-4"}>

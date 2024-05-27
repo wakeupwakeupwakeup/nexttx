@@ -19,5 +19,5 @@ export const labelsMap: Record<string, string> = {
     type: "Тип",
     status: "Статус",
     channel: "Канал",
-    complete_task: "Дата завершения"
+    complete_task: "Время завершения"
 }

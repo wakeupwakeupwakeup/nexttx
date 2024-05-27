@@ -26,3 +26,13 @@ export const storeToken = async (request: AuthTokenData) => {
     })
     return Promise.resolve()
 }
+
+export const isValid = async (): Promise<boolean> => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_HOST}/api/token`, {
+        credentials: 'same-origin',
+        headers: new Headers({
+            'Cookie': `access_token=${cookies().get('access_token')?.value}`,
+        })
+    })
+    return response.ok
+}

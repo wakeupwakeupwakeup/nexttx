@@ -21,7 +21,7 @@ const TasksTabs: React.FC = () => {
                     <TabsList className={"flex w-full justify-between"}>
                         {/*<TabsTrigger value={"registration"} className={"w-1/3"}>Регистрация</TabsTrigger>*/}
                         {/*<TabsTrigger value={"email"} className={"w-1/3"}>Почта</TabsTrigger>*/}
-                        <TabsTrigger value={"viewers"} className={"w-1/3"}>Зрители</TabsTrigger>
+                        <TabsTrigger value={"viewers"} className={"w-1/3 bg-twitch-purple-200"}>Зрители</TabsTrigger>
                     </TabsList>
                     <TabsContent value={"viewers"}>
                         <AddTaskForm />

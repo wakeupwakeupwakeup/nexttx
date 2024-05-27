@@ -1,17 +1,11 @@
-import reqWithCredentials from "@/shared/lib/axios/interceptors";
+import {revalidateTag} from "next/cache";
 
 export async function deleteTask(taskId: number) {
-    return reqWithCredentials.delete(`${process.env.NEXT_PUBLIC_API_HOST}/tasks/delete`, {
-        params: {
-            id: taskId,
-            type: "stream"
-        }
+    const response = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_HOST}/api/tasks/delete`, {
+        method: 'POST',
+        credentials: 'same-origin',
+        body: JSON.stringify(taskId)
     })
-        .then((res) => {
-            console.log(res)
-            return Promise.resolve()
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+    console.log(response.json())
+    revalidateTag('activeTasks')
 }
